@@ -45,3 +45,6 @@ Type=4
 
 [Project]
 VersionControlSupport=kdevgit
+
+[pythonsupport]
+interpreter=/home/alsira/miniconda3/envs/cs4471/bin/python
