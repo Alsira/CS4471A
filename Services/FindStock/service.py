@@ -65,4 +65,4 @@ def handle_stock_request(symbol):
     return jsonify({"stock_info": stock_info, "valid_symbols": valid_symbols})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run("0.0.0.0:5000", debug=True)
