@@ -38,24 +38,14 @@ def user_exists(user: str):
         return json.dumps({"result": False})
     
 
-@app.route("/virtual/get/<string:token>", methods=["GET"])
-def getUserStock(token: str):
+@app.route("/virtual/get/<string:username>", methods=["GET"])
+def getUserStock(username: str):
     
     # Find out who is asking
     try:
         
         # Get the person from the tokens
         client = Cloudant.iam(API_USER, API_KEY, connect=True)
-        
-        try:
-            token_database = client["tokens"]
-        
-            # Get the username from the token
-            user_token = token_database[token]
-            username = user_token["username"]
-        
-        except KeyError as e:
-            return json.dumps({"error": str(e)}), 400
         
         # Get the virtual currency datbase
         try:
@@ -125,8 +115,8 @@ def getDate():
     return date.today().strftime("%d%m%y")
 
 
-@app.route("/virtual/trade/<string:token>", methods=["PUT", "POST"])
-def tradeVirtual(token: str):
+@app.route("/virtual/trade/<string:username>", methods=["PUT", "POST"])
+def tradeVirtual(username: str):
     
     # Get the request data
     data = request.get_json(force = True)
@@ -135,14 +125,8 @@ def tradeVirtual(token: str):
     
         # Get the username from the token
         client = Cloudant.iam(API_USER, API_KEY, connect=True)
-        token_database = client["tokens"]
         virt_database = client["virtualcurrency"]
         
-        if token not in token_database:
-            return json.dumps({"error": "token does not exist - " + token}), 400
-        
-        # Get the username
-        username = token_database[token]["username"]
         virt_info = virt_database[username]
     
         # Get information
@@ -183,33 +167,23 @@ def tradeVirtual(token: str):
         return json.dumps({"error": str(e)}), 400
     
     
-@app.route("/virtual/add/<string:token>", methods=["POST", "PUT"])
-def createUser(token: str):
+@app.route("/virtual/add/<string:username>", methods=["POST", "PUT"])
+def createUser(username: str):
     
     client = Cloudant.iam(API_USER, API_KEY, connect=True)
     
-    # Databases
-    token_database = client["tokens"]
+    # Database
     virt_database = client["virtualcurrency"]
     
     try:
+            
+        # Add the user to the database
+        result = add_user(username)
         
-        if token in token_database:
-            
-            # Add the user
-            username = token_database[token]["username"]
-            
-            # Add the user to the database
-            result = add_user(username)
-            
-            if not result:
-                return json.dumps({"error": "Cannot add user"}), 400
-            
-            return ""
+        if not result:
+            return json.dumps({"error": "Cannot add user"}), 400
         
-        else:
-            
-            return json.dumps({"error": "token " + str(token) + " does not exist"}), 400
+        return ""
 
     except KeyError as e:
         return json.dumps({"error": str(e)}), 400
@@ -240,6 +214,7 @@ if __name__ == "__main__":
         this_url = os.environ["HERE"]
     
     except:
+        print("problem")
         response = True
     
     while not response:
@@ -251,6 +226,6 @@ if __name__ == "__main__":
       
             sleep(5)
         
-    app.run("0.0.0.0", port=5000, debug=True)
+    app.run("0.0.0.0", port=5002, debug=True)
     
     

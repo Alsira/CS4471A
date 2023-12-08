@@ -13,22 +13,12 @@ def test_create():
     client = Cloudant.iam(API_USER, API_KEY, connect=True)
     
     database = client["virtualcurrency"]
-    token_d = client["tokens"]
     
     # Delete if they exist
     if "test" in database:
         database["test"].delete()
-        
-    # Add a fake token
-    if "token123" in token_d:
-        token_d["token123"].delete()
-        
-    token_d.create_document({
-        "_id": "token123",
-        "username": "test"
-        })
     
-    response = requests.post("http://127.0.0.1:5000/virtual/add/token123")
+    response = requests.post("http://127.0.0.1:5000/virtual/add/test")
     
     if response.status_code != 200:
         return False
@@ -47,7 +37,6 @@ def test_exists():
     client = Cloudant.iam(API_USER, API_KEY, connect=True)
     
     database = client["virtualcurrency"]
-    token_d = client["tokens"]
     
     # Delete if they exist
     if "test" in database:
@@ -76,21 +65,11 @@ def test_getStock():
     client = Cloudant.iam(API_USER, API_KEY, connect=True)
     
     database = client["virtualcurrency"]
-    token_d = client["tokens"]
     
     # Delete if they exist
     if "test" in database:
         database["test"].delete()
         
-    # Add a fake token
-    if "token123" in token_d:
-        token_d["token123"].delete()
-        
-    token_d.create_document({
-        "_id": "token123",
-        "username": "test"
-        })
-    
         
     doc = {"_id": "test",
            "username": "test",
@@ -105,7 +84,7 @@ def test_getStock():
                
     database.create_document(doc)
     
-    response = requests.get("http://127.0.0.1:5000/virtual/get/token123")
+    response = requests.get("http://127.0.0.1:5000/virtual/get/test")
     js = json.loads(response.text)
     del js["_rev"]
     
@@ -122,20 +101,10 @@ def test_tradeVirtual():
     client = Cloudant.iam(API_USER, API_KEY, connect=True)
     
     database = client["virtualcurrency"]
-    token_d = client["tokens"]
     
     # Delete if they exist
     if "test" in database:
         database["test"].delete()
-        
-    # Add a fake token
-    if "token123" in token_d:
-        token_d["token123"].delete()
-        
-    token_d.create_document({
-        "_id": "token123",
-        "username": "test"
-        })
     
     
     doc = {"_id": "test",
@@ -153,7 +122,7 @@ def test_tradeVirtual():
     database.create_document(doc)
 
     # Check response
-    response = requests.post("http://127.0.0.1:5000/virtual/trade/token123", data=json.dumps({"symbol": "APL", "shares": 5, "worth": 12.23, "type": "buy"}), headers={"Content-Type": "application/json"})
+    response = requests.post("http://127.0.0.1:5000/virtual/trade/test", data=json.dumps({"symbol": "APL", "shares": 5, "worth": 12.23, "type": "buy"}), headers={"Content-Type": "application/json"})
     
     # Output 
     
