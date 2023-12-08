@@ -5,6 +5,8 @@ from time import sleep
 import os
 import sys
 import json
+import requests
+import threading
 
 app = Flask(__name__)
 
@@ -38,22 +40,24 @@ def get_user_watchlist():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 def register(registry_url: str, name: str, service_url: str) -> bool:
-    
-    # Send the request
-    data = {
-        "name": name,
-        "url": service_url
-        }    
         
-    response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
-    
-    if response.status_code > 299 or response.status_code < 200:
-        return False
-    
-    else:
-        return True
+    while True:
+        
+        try:    
+            # Send the request
+            data = {
+                "name": name,
+                "url": service_url
+                }    
+                
+            response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
+            sleep(20)
             
+        except:
+            sleep(5)
+
 if __name__ == "__main__":
     
     # register
@@ -62,16 +66,11 @@ if __name__ == "__main__":
         url = os.environ["REGISTRY"]
         this_url = os.environ["HERE"]
     
-    except:
-        response = True
-    
-    while not response:
-
-        try:
-            register(url, "virtual_trader", this_url)
-            response = True
-        except:
-      
-            sleep(5)
+        t = threading.Thread(target=register, args=(url, "watchlist", this_url))
+        t.start()
         
-    app.run("0.0.0.0", port=5000, debug=False)
+    except Exception as e:
+        raise Exception(str(e))
+    
+    
+    app.run("0.0.0.0", port=5002, debug=False)

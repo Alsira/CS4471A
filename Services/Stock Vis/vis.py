@@ -5,6 +5,9 @@ import pandas as pd
 import json
 import os
 import sys
+from time import sleep
+import threading
+import requests
 
 app = Flask(__name__)
 
@@ -52,39 +55,34 @@ def format_stock_data(data, symbol):
 
 
 def register(registry_url: str, name: str, service_url: str) -> bool:
-    
-    # Send the request
-    data = {
-        "name": name,
-        "url": service_url
-        }    
         
-    response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
-    
-    if response.status_code > 299 or response.status_code < 200:
-        return False
-    
-    else:
-        return True
+    while True:
+        
+        try:    
+            # Send the request
+            data = {
+                "name": name,
+                "url": service_url
+                }    
+                
+            response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
+            sleep(20)
             
+        except:
+            sleep(5)
+
 if __name__ == "__main__":
     
-     # register
-    response = False
+    # register
     try:
         url = os.environ["REGISTRY"]
         this_url = os.environ["HERE"]
     
-    except:
-        response = True
+        t = threading.Thread(target=register, args=(url, "stock visualization", this_url))
+        t.start()
+        
+    except Exception as e:
+        raise Exception(str(e))
     
-    while not response:
-
-        try:
-            register(url, "virtual_trader", this_url)
-            response = True
-        except:
-      
-            sleep(5)
     
-    app.run("0.0.0.0", port=5002, debug=True)
+    app.run("0.0.0.0", port=5002, debug=False)

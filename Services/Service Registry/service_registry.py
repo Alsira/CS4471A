@@ -8,6 +8,7 @@ services = {}
 
 def ping():
     
+    keys_delete =list()
     for key in services.keys():
         
         try:
@@ -15,8 +16,10 @@ def ping():
             response = requests.get(services[key].strip("/") + "/ping")
                 
         except Exception as e:
-            services[key] = str(e) + "-" + services[key]
-    
+            keys_delete.append(key)
+            
+    for key in keys_delete:
+        del services[key]
         
 @app.route('/register', methods=['POST'])
 def register_service():
