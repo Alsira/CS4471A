@@ -4,6 +4,7 @@ import requests.exceptions
 import requests
 import json
 import sys
+import os
 
 app = Flask(__name__)
 
@@ -103,4 +104,4 @@ if __name__ == "__main__":
       
             sleep(5)
         
-    app.run("0.0.0.0", port=5000, debug=False)
+    app.run("0.0.0.0", port=5000, debug=True)

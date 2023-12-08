@@ -3,6 +3,7 @@ from cloudant.client import Cloudant
 
 from time import sleep
 import os
+import sys
 
 app = Flask(__name__)
 

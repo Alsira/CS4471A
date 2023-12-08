@@ -7,6 +7,7 @@ Documentation, License etc.
 from flask import Flask, request
 import json
 import sys
+import os
 import requests
 from datetime import date
 from time import sleep
