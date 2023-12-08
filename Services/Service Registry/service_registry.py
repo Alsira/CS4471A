@@ -12,10 +12,10 @@ def ping():
         
         try:
             # Check if they respond
-            response = request.get(services[key] + "/ping", timeout=3)
+            response = requests.get(services[key].strip("/") + "/ping")
                 
-        except:
-            services[key] = ""
+        except Exception as e:
+            services[key] = str(e) + "-" + services[key]
     
         
 @app.route('/register', methods=['POST'])
