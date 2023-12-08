@@ -4,5 +4,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 5000
-ENV FLASK_APP=VirtualTrading.py
-CMD ["python", "-m", "flask", "--app", "VirtualTrading", "run"]
+ENV FLASK_APP=vis.py
+CMD ["python", "-m", "flask", "--app", "vis", "run"]
