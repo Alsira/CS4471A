@@ -4,6 +4,7 @@ from cloudant.client import Cloudant
 from time import sleep
 import os
 import sys
+import json
 
 app = Flask(__name__)
 

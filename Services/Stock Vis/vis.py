@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify
 import yfinance as yf
 import pandas as pd
 
+import json
+import os
+import sys
+
 app = Flask(__name__)
 
 # Johnny Long Stock
