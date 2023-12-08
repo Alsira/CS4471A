@@ -88,14 +88,13 @@ def register(registry_url: str, name: str, service_url: str) -> bool:
 if __name__ == "__main__":
     
     # register
+    response = False
     try:
         url = os.environ["REGISTRY"]
         this_url = os.environ["HERE"]
     
     except:
         response = True
-    
-    response = False
     
     while not response:
 
