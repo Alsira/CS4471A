@@ -20,6 +20,7 @@ def ping():
         
 @app.route('/register', methods=['POST'])
 def register_service():
+    ping()
     data = request.get_json()
     
     service_name = data.get('name')
@@ -33,10 +34,12 @@ def register_service():
 
 @app.route('/services', methods=['GET'])
 def list_services():
+    ping()
     return jsonify(services)
 
 @app.route('/service', methods=['GET'])
 def get_service():
+    ping()
     service_name = request.args.get('name')
     if service_name:
         service_url = services.get(service_name)

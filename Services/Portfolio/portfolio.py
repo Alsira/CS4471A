@@ -4,6 +4,7 @@ from cloudant.client import Cloudant
 import os
 import requests
 import sys
+import json
 
 app = Flask(__name__)
 
