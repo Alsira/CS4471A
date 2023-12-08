@@ -4,5 +4,5 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 5000
-ENV FLASK_APP=service.py
+ENV FLASK_APP=service_registry.py
 CMD ["python", "-m", "flask", "--app", "service_registry", "run"]
