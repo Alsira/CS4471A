@@ -9,6 +9,10 @@ from time import sleep
 
 app = Flask(__name__)
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    return json.dumps({"status": "good"})
+
 def add_to_json_array(ticker, file_path="valid_symbols.json"):
     # Load existing symbols from the JSON file if it exists
     if os.path.exists(file_path):
