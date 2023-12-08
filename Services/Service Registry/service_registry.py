@@ -4,6 +4,18 @@ import requests
 app = Flask(__name__)
 services = {}
 
+def ping():
+    
+    for key in services.keys():
+        
+        try:
+            # Check if they respond
+            response = request.get(services[key] + "/ping", timeout=3)
+                
+        except:
+            services[key] = ""
+    
+        
 @app.route('/register', methods=['POST'])
 def register_service():
     data = request.get_json()

@@ -233,10 +233,13 @@ def register(registry_url: str, name: str, service_url: str) -> bool:
 if __name__ == "__main__":
     
     # register
-    url = sys.argv[1]
-    this_url = sys.argv[2]
+    response = False
+    try:
+        url = os.environ["REGISTRY"]
+        this_url = os.environ["HERE"]
     
-    response = True
+    except:
+        response = True
     
     while not response:
 
@@ -247,5 +250,6 @@ if __name__ == "__main__":
       
             sleep(5)
         
-        
     app.run("0.0.0.0", port=5000, debug=True)
+    
+    

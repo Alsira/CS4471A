@@ -56,7 +56,6 @@ def register(registry_url: str, name: str, service_url: str) -> bool:
         }    
         
     response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
-    print(response.text)
     
     if response.status_code > 299 or response.status_code < 200:
         return False
@@ -66,9 +65,22 @@ def register(registry_url: str, name: str, service_url: str) -> bool:
             
 if __name__ == "__main__":
     
-    # register
-    url = sys.argv[1]
-    this_url = sys.argv[2]
-    register(url, "stock_visualization", this_url)
+     # register
+    response = False
+    try:
+        url = os.environ["REGISTRY"]
+        this_url = os.environ["HERE"]
+    
+    except:
+        response = True
+    
+    while not response:
+
+        try:
+            register(url, "virtual_trader", this_url)
+            response = True
+        except:
+      
+            sleep(5)
     
     app.run("0.0.0.0", port=5002, debug=True)
