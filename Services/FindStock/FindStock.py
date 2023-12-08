@@ -42,6 +42,7 @@ def search_stock(ticker):
             "Day's Range": f"{info.get('dayLow')} - {info.get('dayHigh')}",
             "52 Week Range": f"{info.get('fiftyTwoWeekLow')} - {info.get('fiftyTwoWeekHigh')}",
             "Volume": info.get("volume"),
+            "Percent Change": info.get("PercentChange"),
             "Average Volume": info.get("averageVolume"),
             "Market Cap": info.get("marketCap"),
             "P/E Ratio": info.get("trailingPE"),
