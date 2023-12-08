@@ -1,9 +1,9 @@
-```
 from flask import Flask, jsonify
 import yfinance as yf
 import requests.exceptions
+import requests
 import json
-import os
+import sys
 
 app = Flask(__name__)
 
@@ -32,7 +32,7 @@ def search_stock(ticker):
         # Attempting to fetch the stock information
         info = stock.info
 
-        # Extracting specific details
+        # Extracting specific details 
         stock_data = {
             "Company Name": info.get("longName"),
             "Current Price": info.get("currentPrice"),
@@ -44,7 +44,6 @@ def search_stock(ticker):
             "Average Volume": info.get("averageVolume"),
             "Market Cap": info.get("marketCap"),
             "P/E Ratio": info.get("trailingPE"),
-            "Percent Change": info.get("PercentChange"),
             "Dividend Yield": info.get("dividendYield") * 100 if info.get("dividendYield") is not None else None
         }
 
@@ -66,6 +65,42 @@ def handle_stock_request(symbol):
 
     return jsonify({"stock_info": stock_info, "valid_symbols": valid_symbols})
 
-if __name__ == '__main__':
-    app.run(debug=True)
-```
+
+def register(registry_url: str, name: str, service_url: str) -> bool:
+    
+    # Send the request
+    data = {
+        "name": name,
+        "url": service_url
+        }    
+        
+    response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
+    
+    if response.status_code > 299 or response.status_code < 200:
+        return False
+    
+    else:
+        return True
+            
+if __name__ == "__main__":
+    
+    # register
+    try:
+        url = os.environ["REGISTRY"]
+        this_url = os.environ["HERE"]
+    
+    except:
+        response = True
+    
+    response = False
+    
+    while not response:
+
+        try:
+            register(url, "virtual_trader", this_url)
+            response = True
+        except:
+      
+            sleep(5)
+        
+    app.run("0.0.0.0", port=5000, debug=False)
