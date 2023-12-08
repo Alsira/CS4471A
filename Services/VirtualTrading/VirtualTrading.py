@@ -87,7 +87,7 @@ def add_user(username: str, force: bool = True) -> bool:
                 "_id": username,
                 "username": username,
                 "currency": 0,
-                "stock": {}
+                "stocks": {}
                 }
             
             # Determine if they are a paying customer
@@ -142,13 +142,13 @@ def tradeVirtual(username: str):
             return json.dumps({"error": "Invalid argument. Need buy or sell " - str(data["type"])}), 400
         
         # find where the stock is
-        if symbol not in virt_info["stock"]:
-                virt_info["stock"][symbol] = {}
-                virt_info["stock"][symbol]["sell"] = list()
-                virt_info["stock"][symbol]["buy"] = list()
+        if symbol not in virt_info["stocks"]:
+                virt_info["stocks"][symbol] = {}
+                virt_info["stocks"][symbol]["sell"] = list()
+                virt_info["stocks"][symbol]["buy"] = list()
                 
                 
-        virt_info["stock"][symbol][type_of_request].append({"shares": stocks, "worth": cost, "date": date})
+        virt_info["stocks"][symbol][type_of_request].append({"shares": stocks, "worth": cost, "date": date})
         
         if type_of_request == "buy":
             virt_info["currency"] -= cost
