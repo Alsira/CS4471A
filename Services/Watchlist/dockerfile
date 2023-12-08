@@ -5,4 +5,4 @@ RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 5000
 ENV FLASK_APP=watchlist.py
-CMD ["python", "-m", "flask", "--app", "watchlist", "run"]
+CMD ["python", "watchlist.py"]
