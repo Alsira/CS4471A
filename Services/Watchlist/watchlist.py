@@ -16,6 +16,10 @@ API_KEY = "IGzHN-SnHoE7X-Xn_wlCK0ogL62UusTafB2ZO8CZeXub"
 client = Cloudant.iam(API_USER, API_KEY, connect=True)
 database = client["watchlist"]
 
+@app.route("/ping", methods=["GET"])
+def ping():
+    return json.dumps({"status": "good"})
+
 @app.route('/user_watchlist', methods=['GET'])
 def get_user_watchlist():
     user_id = request.args.get('user_id')
