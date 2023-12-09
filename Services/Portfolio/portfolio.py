@@ -56,7 +56,8 @@ def register(registry_url: str, name: str, service_url: str) -> bool:
             response = requests.post(registry_url + "/register", data=json.dumps(data), headers={"Content-Type": "application/json"})
             sleep(20)
             
-        except:
+        except Exception as e:
+            print(e)
             sleep(5)
 
 if __name__ == "__main__":
@@ -72,8 +73,5 @@ if __name__ == "__main__":
     except Exception as e:
         raise Exception(str(e))
     
-    print(url)
-    print(this_url)
-    exit()
     
     app.run("0.0.0.0", port=5000, debug=False)
