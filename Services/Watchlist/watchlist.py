@@ -72,5 +72,8 @@ if __name__ == "__main__":
     except Exception as e:
         raise Exception(str(e))
     
+    print(url)
+    print(this_url)
+    exit()
     
     app.run("0.0.0.0", port=5002, debug=False)

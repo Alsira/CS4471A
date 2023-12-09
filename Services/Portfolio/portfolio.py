@@ -19,7 +19,7 @@ database = client["portfolio"]
 
 @app.route("/ping", methods=["GET"])
 def ping():
-    return json.dumps({"status": "good"})
+    return json.dumps({"status": os.environ["REGISTRY"]})
 
 @app.route('/user_stocks', methods=['GET'])
 def get_user_stocks():
@@ -72,5 +72,8 @@ if __name__ == "__main__":
     except Exception as e:
         raise Exception(str(e))
     
+    print(url)
+    print(this_url)
+    exit()
     
     app.run("0.0.0.0", port=5000, debug=False)
