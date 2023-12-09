@@ -19,7 +19,7 @@ database = client["portfolio"]
 
 @app.route("/ping", methods=["GET"])
 def ping():
-    return json.dumps({"status": os.environ["REGISTRY"]})
+    return json.dumps({"status": "good"})
 
 @app.route('/user_stocks', methods=['GET'])
 def get_user_stocks():
